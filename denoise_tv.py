@@ -309,8 +309,10 @@ def main() -> None:
         denoised = tv_denoise_pdhg(noisy, weight=weight, iterations=args.iterations)
 
         # 计算指标
+        
         noisy_psnr, noisy_ssim = psnr(clean, noisy), ssim(clean, noisy)
         result_psnr, result_ssim = psnr(clean, denoised), ssim(clean, denoised)
+        
 
         result_psnrs.append(result_psnr)
 
@@ -327,7 +329,7 @@ def main() -> None:
             f"{result_psnr:13.2f} | {result_ssim:13.4f}"
         )
 
-    # 保存对比图（每行对应一个 sigma，每列是 clean / noisy / denoised）
+    
     save_comparison_png(
         args.output,
         rows,
@@ -335,7 +337,7 @@ def main() -> None:
     )
     print(f"Saved comparison to: {args.output.resolve()}")
 
-    # 如果最低 PSNR 低于 25dB，则视为去噪失败（用于自动化测试）
+    
     if min(result_psnrs) < 25.0:
         raise RuntimeError(f"Denoising failed: minimum PSNR {min(result_psnrs):.2f} dB < 25 dB")
 
